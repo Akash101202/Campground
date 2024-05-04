@@ -1,17 +1,19 @@
 mapboxgl.accessToken = mapToken;
     const map = new mapboxgl.Map({
-        container: 'map',
+        container: 'cluster-map',
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/mapbox/dark-v11',
         center: [-103.5917, 40.6699],
         zoom: 3
     });
 
+
+    map.addControl(new mapboxgl.NavigationControl());
     map.on('load', () => {
         // Add a new source from our GeoJSON data and
         // set the 'cluster' option to true. GL-JS will
         // add the point_count property to your source data.
-        map.addSource('earthquakes', {
+        map.addSource('campgrounds', {
             type: 'geojson',
             // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
             // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
@@ -24,7 +26,7 @@ mapboxgl.accessToken = mapToken;
         map.addLayer({
             id: 'clusters',
             type: 'circle',
-            source: 'earthquakes',
+            source: 'campgrounds',
             filter: ['has', 'point_count'],
             paint: {
                 // Use step expressions (https://docs.mapbox.com/style-spec/reference/expressions/#step)
@@ -56,7 +58,7 @@ mapboxgl.accessToken = mapToken;
         map.addLayer({
             id: 'cluster-count',
             type: 'symbol',
-            source: 'earthquakes',
+            source: 'campgrounds',
             filter: ['has', 'point_count'],
             layout: {
                 'text-field': ['get', 'point_count_abbreviated'],
@@ -68,7 +70,7 @@ mapboxgl.accessToken = mapToken;
         map.addLayer({
             id: 'unclustered-point',
             type: 'circle',
-            source: 'earthquakes',
+            source: 'campgrounds',
             filter: ['!', ['has', 'point_count']],
             paint: {
                 'circle-color': '#11b4da',
@@ -84,7 +86,7 @@ mapboxgl.accessToken = mapToken;
                 layers: ['clusters']
             });
             const clusterId = features[0].properties.cluster_id;
-            map.getSource('earthquakes').getClusterExpansionZoom(
+            map.getSource('campgroundss').getClusterExpansionZoom(
                 clusterId,
                 (err, zoom) => {
                     if (err) return;
@@ -102,14 +104,10 @@ mapboxgl.accessToken = mapToken;
         // the location of the feature, with
         // description HTML from its properties.
         map.on('click', 'unclustered-point', (e) => {
+            const text = e.features[0].properties.popUpMarkup;
             const coordinates = e.features[0].geometry.coordinates.slice();
-            const mag = e.features[0].properties.mag;
-            const tsunami =
-                e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
+            
 
-            // Ensure that if the map is zoomed out such that
-            // multiple copies of the feature are visible, the
-            // popup appears over the copy being pointed to.
             while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                 coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
             }
@@ -117,7 +115,7 @@ mapboxgl.accessToken = mapToken;
             new mapboxgl.Popup()
                 .setLngLat(coordinates)
                 .setHTML(
-                    `magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
+                    text
                 )
                 .addTo(map);
         });

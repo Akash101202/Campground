@@ -35,20 +35,17 @@ const seedDB = async () => {
             },
             images: [
                 {
-                  url: 'https://res.cloudinary.com/dqmx7pa9q/image/upload/v1713614671/YelpCamp/mrrt4fiqhchtedwakeov.png',
-                  filename: 'YelpCamp/mrrt4fiqhchtedwakeov',
+                  
+                  url: 'https://res.cloudinary.com/dqmx7pa9q/image/upload/v1714809548/YelpCamp/v6nfzmbho8hpiaogviz5.avif',
+                  filename: 'YelpCamp/v6nfzmbho8hpiaogviz5',
                   
                 },
                 {
-                  url: 'https://res.cloudinary.com/dqmx7pa9q/image/upload/v1713614673/YelpCamp/pa3uwd1jdscpdonfsqf7.png',
-                  filename: 'YelpCamp/pa3uwd1jdscpdonfsqf7',
+                  url: 'https://res.cloudinary.com/dqmx7pa9q/image/upload/v1714809331/YelpCamp/ytmlqdzihoxvtapt34bc.png',
+                  filename: 'YelpCamp/ytmlqdzihoxvtapt34bc',
                   
-                },
-                {
-                  url: 'https://res.cloudinary.com/dqmx7pa9q/image/upload/v1713614674/YelpCamp/sogjerzjkycxlycnuwqd.png',
-                  filename: 'YelpCamp/sogjerzjkycxlycnuwqd',
-                  
-                }]
+                }
+              ]
         })
         await camp.save();
     }
