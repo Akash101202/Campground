@@ -20,7 +20,7 @@ const reviewsroutes = require('./routes/review')
 const userroutes = require('./routes/user')
 
 // 'mongodb://localhost:27017/Yelpcamp'
-const dbUrl = process.env.DB_URL;
+const dbUrl =process.env.DB_URL;
 mongoose.connect(dbUrl)
 .then(()=>{
     console.log("Connection Open")
