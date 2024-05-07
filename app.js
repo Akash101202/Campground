@@ -13,12 +13,15 @@ const flash = require('connect-flash')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
+const MongoStore = require('connect-mongo');
 
 const campgroundsroutes = require('./routes/campground')
 const reviewsroutes = require('./routes/review')
 const userroutes = require('./routes/user')
 
-mongoose.connect('mongodb://localhost:27017/Yelpcamp')
+'mongodb://localhost:27017/Yelpcamp'
+const dbUrl = process.env.DB_URL;
+mongoose.connect(dbUrl)
 .then(()=>{
     console.log("Connection Open")
 })
@@ -34,6 +37,13 @@ app.use(methodOverride('_method'))
 app.engine('ejs',ejsMate)
 
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+});
 
 const sessionConfig = {
     secret:'Thisshouldbe better',
@@ -46,7 +56,6 @@ const sessionConfig = {
         cookie: { secure: true }
     }
 }
-
 
 
 
