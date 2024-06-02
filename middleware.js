@@ -33,7 +33,7 @@ module.exports.validateCampground = (req, res, next) => {
     } else {
         next();
     }
-    next();
+
 }
 
 module.exports.isAuthor = async (req, res, next) => {

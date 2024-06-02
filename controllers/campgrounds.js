@@ -8,6 +8,10 @@ const { cloudinary } = require("../cloudinary");
 module.exports.search = async (req, res) => {
     const searchQuery = req.query.q;
     let campgrounds;
+    function escapeRegex(text) {
+        return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    }
+    
     if (searchQuery) {
         const regex = new RegExp(escapeRegex(searchQuery), 'gi');
         campgrounds = await Campground.find({ 
@@ -19,9 +23,6 @@ module.exports.search = async (req, res) => {
     res.render('campgrounds/search', { campgrounds, searchQuery });
 };
 
-function escapeRegex(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-}
 
 
 module.exports.index = async (req, res) => {

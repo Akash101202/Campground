@@ -24,7 +24,7 @@ router.route('/search')
 
 router.route('/:id')
     .get(catchAsync(campground.showCampground))
-    .put(isLoggedIn, isAuthor, upload.array('image'),validateCampground, catchAsync(campground.updatedCamp))
+    .put(isLoggedIn, isAuthor, upload.array('image'),validateCampground, catchAsync(campground.updateCampground))
     .delete(isLoggedIn, isAuthor, catchAsync(campground.deleteCamp));
 
 
