@@ -15,6 +15,13 @@ router.route('/')
 
 router.get('/new', isLoggedIn, campground.renderNewForm)
 
+
+// Show route
+router.get('/:id/bookCamp',catchAsync(campground.bookCampground))
+
+router.route('/search')
+    .get(catchAsync(campground.search))
+
 router.route('/:id')
     .get(catchAsync(campground.showCampground))
     .put(isLoggedIn, isAuthor, upload.array('image'),validateCampground, catchAsync(campground.updatedCamp))
@@ -22,7 +29,6 @@ router.route('/:id')
 
 
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campground.edit))
-
 
 
 

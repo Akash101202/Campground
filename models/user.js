@@ -9,8 +9,29 @@ const UserSchema = new Schema ({
         type:String,
         required:true,
         unique:true
-    }
+    },
+    role:{
+        type:String,
+        enum:['user','admin'],
+        default:'user'
+    },
+    // googleId: String,
+    // facebookId: String,
+    
 })
+// UserSchema.statics.findOrCreate = function findOrCreate(profile, cb) {
+//     const userObj = new this();
+//     this.findOne({ $or: [{ googleId: profile.id }, { facebookId: profile.id }] }, (err, result) => {
+//         if (!result) {
+//             userObj.googleId = profile.id || null;
+//             userObj.facebookId = profile.id || null;
+//             userObj.username = profile.displayName;
+//             userObj.save(cb);
+//         } else {
+//             cb(err, result);
+//         }
+//     });
+// };
 
 UserSchema.plugin(passportLocalMongoose)
 

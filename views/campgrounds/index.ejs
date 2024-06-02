@@ -1,12 +1,18 @@
 <% layout('layouts/boilerplate')%>
+<link rel="stylesheet" href="/stylesheets/nav.css">
+<link rel="stylesheet" href="/stylesheets/app.css">
+
+<center><img src="https://res.cloudinary.com/dqmx7pa9q/image/upload/v1717251215/Title-removebg-preview_rnon6g.png" alt="" class="img-fluid"></center>
 <div id="cluster-map"></div>
+<div class="container" id=""></div>
 <div class="container mb-6">
     <div class="row">
-        <strong><center><h2 class="mt-3">Welcome To Yelpcamp</h2></center></strong>
+        <!-- <strong><center><h1 class="mt-3">Welcome To TrailHaven</h1></center></strong> -->
+        
         <% for (let campground of campgrounds){%>
-            <div class="card ml-3 mb-3 mt-3" style="width: 18rem;">
+            <div class="card ml-3 mb-3 mt-4" style="width: 18rem;">
                 <%if(campground.images.length) {%>
-                    <img class="img-fluid" alt="" src="<%=campground.images[0].url%>">
+                    <img class="img-fluid mt-3" alt="" src="<%=campground.images[0].url%>">
                     <% }else {%>
                     <img class="img-fluid" alt=""
                         src="https://res.cloudinary.com/douqbebwk/image/upload/v1600103881/YelpCamp/lz8jjv2gyynjil7lswf4.png">
@@ -14,10 +20,11 @@
                 <div class="card-body">
                   <h5 class="card-title"><%= campground.title %> </h5>
                   <p class="card-text"><%=campground.description %></p>
-                  <a class="btn" style="background-color: #944AF3;" href="/campgrounds/<%=campground._id%>"><span style="color: papayawhip;">View <%=campground.title%></span></a>
+                  <a class="btn" href="/campgrounds/<%=campground._id%>"><span style="color: white">View <%=campground.title%></span></a>
                 </div>
               </div>
               <% }%>
+             
     </div>
 
     

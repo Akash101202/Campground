@@ -5,6 +5,25 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken})
 const { cloudinary } = require("../cloudinary");
 
 
+module.exports.search = async (req, res) => {
+    const searchQuery = req.query.q;
+    let campgrounds;
+    if (searchQuery) {
+        const regex = new RegExp(escapeRegex(searchQuery), 'gi');
+        campgrounds = await Campground.find({ 
+            $or: [{ title: regex }, { location: regex }] 
+        });
+    } else {
+        campgrounds = await Campground.find({});
+    }
+    res.render('campgrounds/search', { campgrounds, searchQuery });
+};
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
+
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({});
     res.render('campgrounds/index', { campgrounds })
@@ -13,6 +32,8 @@ module.exports.index = async (req, res) => {
 module.exports.renderNewForm = (req, res) => {
     res.render('campgrounds/new');
 }
+
+
 
 module.exports.createCampground = async (req, res, next) => {
     const geoData = await geocoder.forwardGeocode({
@@ -44,6 +65,26 @@ module.exports.showCampground = async (req, res,) => {
     }
     res.render('campgrounds/show', { campground });
 }
+
+
+module.exports.bookCampground = async (req, res) => {
+        try {
+            const campground = await Campground.findById(req.params.id);
+            if (!campground) {
+                req.flash('error', 'Cannot find that campground!');
+                return res.redirect('/campgrounds');
+            }
+            res.render(`campgrounds/bookCamp`, { campground });
+        } catch (err) {
+            console.error(err);
+            req.flash('error', 'Something went wrong!');
+            res.redirect('/campgrounds');
+        }
+
+       
+    };
+    
+
 
 module.exports.edit = async (req, res) => {
     const { id } = req.params;

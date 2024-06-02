@@ -5,14 +5,14 @@
         <form action="/campgrounds" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
-                <input class="form-control" type="text" id="title" name="campground[title]" required>
+                <input class="form-control" type="text" id="title" name="campground[title]" required placeholder="Title">
                 <div class="valid-feedback">
                     Looks good!
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="campground[location]" required>
+                <input class="form-control" type="text" id="location" name="campground[location]" placeholder="Location" required>
                 <div class="valid-feedback">
                     Looks good!
                 </div>
@@ -39,7 +39,7 @@
 
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description" name="campground[description]"
+                <textarea class="form-control" type="text" id="description" name="campground[description]" placeholder="Description"
                     required></textarea>
                 <div class="valid-feedback">
                     Looks good!
@@ -54,10 +54,10 @@
                     </label>
                 </div>
             </div>
-            <div class="mb-3">
-                <button class="btn btn-success">Add Campground</button>
-            </div>
+            <center><div class="mb-3">
+                <button class="btn btn-success btn-light"><strong style="color: white;">Add Campground</strong></button>
+            </div></center>
         </form>
-        <a href="/campgrounds">All Campgrounds</a>
+       
     </div>
 </div>

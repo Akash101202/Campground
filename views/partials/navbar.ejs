@@ -1,25 +1,37 @@
 
- <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: black;">
+<link rel="stylesheet" href="/stylesheets/nav.css">
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark p-3 mb-2 nav-bk4">
+    <a class="navbar-brand" href="/campgrounds">
+        <img src="https://res.cloudinary.com/dqmx7pa9q/image/upload/v1717240351/mw-wm-m-w-monogram-logo-template-isolated-vector-40949612-removebg-preview_crxd1y.png" width="80" height="80" class="align-top" alt="">
+        <a class="navbar-brand" href="/campgrounds"><strong>TrailHaven</strong></a>
+      </a>
+  
     <div class="container-fluid">
-        <a class="navbar-brand" href="/campgrounds"><strong>CampFind</strong></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/campgrounds">Campgrounds</a>
-                <a class="nav-link" href="/campgrounds/new">New Campground</a>
+                <a class="nav-link" href="/" ">Home</a>
+                <a class="nav-link" href="/campgrounds" ">Campgrounds</a>
+                <a class="nav-link" href="/campgrounds/new" ">New Campground</a>
             </div>
-            <div class="navbar-nav">
-                <% if(!currentUser) {%>
-                <a class="nav-link" href="/login">Login</a>
-                <a class="nav-link" href="/register">Register</a>
-                <% } else {%>
-                <a class="nav-link" href="/logout">Logout</a>
+            <div class="navbar-nav ml-auto">
+                <form class="form-inline ml-auto" action="campgrounds/search" method="GET">
+                    <div class="navbar-nav">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search Your TrailHaven" aria-label="Search" name="q">
+                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                    </div>
+                  </form>
+          
+                <% if(!currentUser) { %>
+                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/register">Register</a>
+                <% } else { %>
+                    <a class="nav-link light" href="/logout" >Logout</a>
                 <% } %>
             </div>
-        </div>
+            
     </div>
 </nav>

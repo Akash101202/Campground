@@ -5,7 +5,10 @@ const passport = require('passport');
 const User =  require('../models/user')
 const user = require('../controllers/user')
 const catchAsync = require('../utils/catchAsync')
+
 const { storeReturnTo } = require('../middleware');
+
+
 
 router.route('/register') 
         .get(catchAsync(user.register))
@@ -30,4 +33,7 @@ router.get('/logout', (req, res, next) => {
         res.redirect('/campgrounds');
     });
 });
+
+
+
 module.exports = router

@@ -14,6 +14,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const MongoStore = require('connect-mongo');
+// const passport_auth = require('./controllers/passport')
 
 const campgroundsroutes = require('./routes/campground')
 const reviewsroutes = require('./routes/review')
@@ -21,7 +22,7 @@ const userroutes = require('./routes/user')
 // process.env.DB_URL
 // 'mongodb://localhost:27017/Yelpcamp'
 
-const dbUrl =process.env.DB_URL;
+const dbUrl ='mongodb://localhost:27017/Yelpcamp';
 mongoose.connect(dbUrl)
 .then(()=>{
     console.log("Connection Open")
@@ -84,6 +85,30 @@ app.use((req,res,next)=>{
 app.get('/',(req,res)=>{
     res.render('home')
 })
+// app.get('/auth/google',
+//     passport_auth.authenticate('google', { scope: ['profile'] })
+// );
+
+// app.get('/auth/google/callback',
+//     passport_auth.authenticate('google', { failureRedirect: '/' }),
+//     (req, res) => {
+//         res.redirect('/');
+//     }
+// );
+
+// // Facebook OAuth Routes
+// app.get('/auth/facebook',
+//     passport_auth.authenticate('facebook')
+// );
+
+// app.get('/auth/facebook/callback',
+//     passport_auth.authenticate('facebook', { failureRedirect: '/' }),
+//     (req, res) => {
+//         res.redirect('/');
+//     }
+// );
+
+
 
 app.use(express.static(path.join(__dirname,'public')))
 
@@ -107,4 +132,3 @@ app.use((err,req,res,next)=>{
 app.listen(3000,()=>{
     console.log("Yelpcamp")
 })
-

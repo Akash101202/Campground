@@ -24,6 +24,7 @@ module.exports.regFail =async (req, res, next) => {
 
 
 module.exports.login= async(req,res)=>{
+   
     res.render('users/login')
 }
 
