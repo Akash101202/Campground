@@ -1,41 +1,41 @@
-// const passport_auth = require('passport');
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
-// const FacebookStrategy = require('passport-facebook').Strategy;
-// const User = require('../models/user') // Your user model
+// // controllers/passport.js
 
-// // Serialize user
-// // Serialize user
-// passport_auth.serializeUser((user, done) => {
+// const passport = require('passport');
+// const GoogleStrategy = require('passport-google-oauth20').Strategy;
+// const User = require('../models/user');
+
+// passport.use(new GoogleStrategy({
+//     clientID: process.env.GOOGLE_CLIENT_ID,
+//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//     callbackURL: '/auth/google/callback'
+// }, async (accessToken, refreshToken, profile, done) => {
+//     try {
+//         let user = await User.findOne({ googleId: profile.id });
+//         if (!user) {
+//             user = new User({
+//                 googleId: profile.id,
+//                 username: profile.displayName,
+//                 email: profile.emails[0].value,
+//             });
+//             await user.save();
+//         }
+//         return done(null, user);
+//     } catch (err) {
+//         return done(err, null);
+//     }
+// }));
+
+// passport.serializeUser((user, done) => {
 //     done(null, user.id);
 // });
 
-// // Deserialize user
-// passport_auth.deserializeUser((id, done) => {
-//     User.findById(id, (err, user) => {
-//         done(err, user);
-//     });
+// passport.deserializeUser(async (id, done) => {
+//     try {
+//         const user = await User.findById(id);
+//         done(null, user);
+//     } catch (err) {
+//         done(err, null);
+//     }
 // });
 
-// // Google OAuth Strategy
-// passport_auth.use(new GoogleStrategy({
-//     clientID: process.env.GOOGLE_CLIENT_ID,
-//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     callbackURL: "/auth/google/callback"
-// }, (token, tokenSecret, profile, done) => {
-//     User.findOrCreate({ googleId: profile.id }, (err, user) => {
-//         return done(err, user);
-//     });
-// }));
-
-// // Facebook OAuth Strategy
-// passport_auth.use(new FacebookStrategy({
-//     clientID: process.env.FACEBOOK_CLIENT_ID,
-//     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-//     callbackURL: "/auth/facebook/callback"
-// }, (accessToken, refreshToken, profile, done) => {
-//     User.findOrCreate({ facebookId: profile.id }, (err, user) => {
-//         return done(err, user);
-//     });
-// }));
-
-// module.exports = passport_auth;
+// module.exports = passport;

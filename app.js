@@ -14,7 +14,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const MongoStore = require('connect-mongo');
-// const passport_auth = require('./controllers/passport')
+const passportConfig = require('./controllers/passport');
 
 const campgroundsroutes = require('./routes/campground')
 const reviewsroutes = require('./routes/review')
@@ -85,16 +85,6 @@ app.use((req,res,next)=>{
 app.get('/',(req,res)=>{
     res.render('home')
 })
-// app.get('/auth/google',
-//     passport_auth.authenticate('google', { scope: ['profile'] })
-// );
-
-// app.get('/auth/google/callback',
-//     passport_auth.authenticate('google', { failureRedirect: '/' }),
-//     (req, res) => {
-//         res.redirect('/');
-//     }
-// );
 
 // // Facebook OAuth Routes
 // app.get('/auth/facebook',
@@ -132,3 +122,30 @@ app.use((err,req,res,next)=>{
 app.listen(3000,()=>{
     console.log("Yelpcamp")
 })
+
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GOOGLE_CLIENT_ID = '116707197765-jusafdodmekf9idftrbvr8d8pkhaertd.apps.googleusercontent.com';
+const GOOGLE_CLIENT_SECRET = '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';
+
+
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+      userProfile=profile;
+      return done(null, userProfile);
+  }
+));
+ 
+app.get('/auth/google', 
+  passport.authenticate('google', { scope : ['profile', 'email'] }));
+ 
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect success.
+    res.redirect('/campgrounds');
+  });
+
