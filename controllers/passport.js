@@ -12,7 +12,7 @@ const GOOGLE_CLIENT_SECRET = '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';
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/callback"
+    callbackURL: "campgrounds/auth/google/callback"
   }, async (accessToken, refreshToken, profile, done) => {
     try {
         let user = await User.findOne({ googleId: profile.id });
