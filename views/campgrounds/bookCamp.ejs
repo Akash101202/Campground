@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate')%>
 
 <center><h1>Welcome to booking page</h1></center>
-<div id="campgroundCarousel" class="carousel slide" data-ride="carousel">
+<div id="campgroundCarousel" class="carousel slide" data-ride="carousel"> <
     <div class="carousel-inner">
         <% campground.images.forEach((img, i) => {  %>
         <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
@@ -17,5 +17,50 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-muted"><%= campground.location%></li>
                 <li class="list-group-item">₹<%= campground.price%>/night</li>
-                <a href="/campgrounds/<%= campground._id %>/bookCamp" class="btn btn-primary" id="book">Book This Camp</a>
-            </div>
+                
+                <form class="pay-form">
+                    <button id="rzp-button1" type="submit">Pay Now</button>
+                </form>
+                
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                <script>
+                $(document).ready(function () {
+                    $(".pay-form").submit(function (e) {
+                        e.preventDefault();
+                
+                        $.ajax({
+                            url: "/campgrounds/<%= campground._id %>/bookCamp/createOrder",
+                            type: "POST",
+                            contentType: "application/json",
+                            data: JSON.stringify({ amount: <%= campground.price %> }),
+                            success: function (res) {
+                                if (res.success) {
+                                    var options = {
+                                        key: "rzp_test_lrBmQZUNKhJB6K",
+                                        amount: res.amount,
+                                        currency: "INR",
+                                        order_id: res.order_id,
+                                        handler: function (response) {
+                                            alert("Payment Succeeded");
+                                        },
+                                        theme: {
+                                            color: "#2300a3"
+                                        }
+                                    };
+                                    var rzp1 = new Razorpay(options);
+                                    rzp1.on("payment.failed", function (response) {
+                                        alert("Payment Failed");
+                                    });
+                                    rzp1.open();
+                                } else {
+                                    alert(res.msg);
+                                }
+                            },
+                            error: function (err) {
+                                alert("There was an error processing your payment. Please try again later.");
+                            }
+                        });
+                    });
+                });
+                </script>

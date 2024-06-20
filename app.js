@@ -4,6 +4,7 @@ if(process.env.NODE_ENV !== 'production'){
 const express = require('express');
 const app=express()
 const path = require('path')
+const cors = require('cors')
 const mongoose = require('mongoose');
 const methodOverride=require('method-override')
 const ejsMate=require('ejs-mate')
@@ -15,10 +16,11 @@ const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const MongoStore = require('connect-mongo');
 const passportConfig = require('./controllers/passport');
-
+const Razorpay = require('razorpay');  
 const campgroundsroutes = require('./routes/campground')
 const reviewsroutes = require('./routes/review')
 const userroutes = require('./routes/user')
+const bodyParser = require('body-parser');
 // process.env.DB_URL
 // 'mongodb://localhost:27017/Yelpcamp'
 
@@ -32,10 +34,37 @@ mongoose.connect(dbUrl)
     console.log(err)
 })
 
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+  });
+  
+  const corsOptions = {
+    origin: 'http://localhost:3000', // Update this to match your frontend URL
+    credentials: true,
+  };
+  
+  app.use(cors(corsOptions))
+  
+  app.use(
+    cors({
+      origin: [process.env.FRONTEND_URL],
+      methods: ["GET", "PUT", "DELETE", "POST"],
+      credentials: true,
+      
+    })
+  );
+
 app.set('views',path.join(__dirname,'views'))
 app.set('view engine','ejs');
 app.use(express.urlencoded({extended:true}))
 app.use(methodOverride('_method'))
+app.use(cors())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 app.engine('ejs',ejsMate)
 
 
@@ -119,33 +148,23 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render('error',{err}) 
 })
 
+
+
+
+
+
 app.listen(3000,()=>{
-    console.log("Yelpcamp")
+    console.log("TrailHaven")
 })
 
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const GOOGLE_CLIENT_ID = '116707197765-jusafdodmekf9idftrbvr8d8pkhaertd.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = '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';
 
 
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-      userProfile=profile;
-      return done(null, userProfile);
-  }
-));
- 
 app.get('/auth/google', 
-  passport.authenticate('google', { scope : ['profile', 'email'] }));
+  passportConfig.authenticate('google', { scope : ['profile', 'email'] }));
  
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
+  passportConfig.authenticate('google', { failureRedirect: '/register' }),
   function(req, res) {
     // Successful authentication, redirect success.
     res.redirect('/campgrounds');
   });
-

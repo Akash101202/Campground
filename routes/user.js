@@ -38,8 +38,8 @@ router.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
 
-router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login', failureFlash: true }), (req, res) => {
-    req.flash('success', 'Welcome back!');
+router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/register', failureFlash: true }), (req, res) => {
+    req.flash('success', 'Welcome To Yelpcamp!');
     res.redirect('/campgrounds');
 });
 

@@ -7,10 +7,11 @@ module.exports.register = async(req,res)=>{
 
 module.exports.regFail =async (req, res, next) => {
     try {
-        const { email, username, password } = req.body;
-        const user = new User({ email, username });
+        const { email, username, password , googleId} = req.body;
+        const user = new User({ email, username});
         const registeredUser = await User.register(user, password);
-        req.login(registeredUser, err => {
+        const googleRegistered = await User.register(googleId)
+        req.login(registeredUser || googleRegistered, err => {
             if (err) return next(err);
             req.flash('success', 'Welcome to Yelp Camp!');
             res.redirect('/campgrounds');

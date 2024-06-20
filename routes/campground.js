@@ -16,8 +16,14 @@ router.route('/')
 router.get('/new', isLoggedIn, campground.renderNewForm)
 
 
+
+// router.get('/payment', campground.renderProductPage);
+
 // Show route
-router.get('/:id/bookCamp',catchAsync(campground.bookCampground))
+router.route('/:id/bookCamp')
+.get(catchAsync(campground.bookCampground))
+
+router.post('/:id/bookCamp/createOrder', campground.createOrder);
 
 router.route('/search')
     .get(catchAsync(campground.search))
